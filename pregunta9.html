@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PREGUNTA 9</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+    <div class="content" id="header">
+        <center><h1><p>¿QUIEN QUIERE SER MILLONARIO?</p></h1></center>
+        
+
+        <center><ul>
+            <li><a href="juego.html"><button>SOBRE EL JUEGO</button></a></li>
+             <li><a href="reglas.html"><button>REGLAS</button></a></li>
+           <li><a href="premios.html"><button>PREMIOS</button></a></li>
+        </ul></center>
+     
+    </div>
+     
+    </header>
+    <div class="container">
+        <div class="container">
+            <center><img src="OIP (2).jpg" class="imagen"></center>
+        <center><span><p><b>PREGUNTA 9</b></p></center></span>
+        <center><span><p><b>¿Cuál es el órgano más grande del cuerpo humano?</b></p></center></span>
+        <div class=container id="preguntas">
+            <center><button class="btn" data-correcta="false">OPCION A = HIGADO</button>
+            <button class="btn" data-correcta="true">OPCION B = PIEL</button></center>
+        </div>
+        <div class= container id="preguntas2">
+            <center><button class="btn" data-correcta="false">OPCION C = CEREBRO</button>
+            <button class="btn" data-correcta="false">OPCION D = PULMONES</button></center>
+    
+        </div>
+        <div class="container">
+      <center><button class="button"><a href="comodines.html"> AQUI PARA USAR COMODINES</a></button></center>
+    </div>
+    <div id="modal" class="modal">
+  <div class="modal-contenido">
+    <h2 id="resultado"></h2>
+    <p id="dinero"></p>
+    <button id="accion"></button>
+  </div>
+</div>
+    </div>
+</div>
+       
+ <script>
+let dineroAcumulado = 0;
+
+document.querySelectorAll(".btn").forEach(boton => {
+  boton.addEventListener("click", () => {
+    // 1. Preguntar si es respuesta definitiva
+    const confirmar = confirm("¿Es tu respuesta definitiva?");
+    
+    if (!confirmar) {
+      return; // si el usuario cancela, no pasa nada
+    }
+
+    // 2. Evaluar respuesta
+    const correcta = boton.dataset.correcta === "true";
+    const modal = document.getElementById("modal");
+    const resultado = document.getElementById("resultado");
+    const dinero = document.getElementById("dinero");
+    const accion = document.getElementById("accion");
+
+    if (correcta) {
+      dineroAcumulado += 250000; // ejemplo: suma de dinero
+      resultado.textContent = "¡Correcto!";
+      dinero.textContent = "Dinero acumulado: $" + dineroAcumulado;
+      accion.textContent = "Siguiente pregunta";
+      accion.onclick = () => {
+        modal.style.display = "none";
+         window.location.href = "pregunta10.html";
+        alert("Cargando siguiente pregunta...");
+        // aquí puedes cargar la siguiente pregunta dinámicamente
+      };
+    } else {
+        dineroAcumulado += 250000; 
+      resultado.textContent = "Incorrecto 😢";
+      dinero.textContent = "Dinero acumulado: $" + dineroAcumulado;
+      accion.textContent = "Reiniciar juego";
+      accion.onclick = () => {
+        window.location.href = "index.html"; // vuelve a la primera página
+      };
+    }
+
+    // 3. Mostrar modal
+    modal.style.display = "flex";
+  });
+});
+
+ </script> 
+    
+</body>
+</html>

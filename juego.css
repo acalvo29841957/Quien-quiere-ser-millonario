@@ -1,0 +1,54 @@
+body{
+    background-color: darkslateblue;
+    color: whitesmoke;
+}
+
+div{
+    background-color: darkblue;
+    height: 150px;
+    size: 100px;
+    border: 50px;
+    padding: 10px;
+    color: whitesmoke;
+    margin: 10px; 
+    border-radius:5px;
+}
+
+h1{
+    font-size: 50px;
+}
+
+.container{
+    background-color:  darkslateblue;
+    color: black;
+    font-family:'Times New Roman', Times, serif;
+    p{
+        font-size: 30px;
+    }
+    
+}
+
+p{
+    margin: 50px;
+
+}
+
+.imagen{
+    float: right;
+    height: 200px;
+    width: 200px;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow:0 0 10px #fff, 0 0 20px #fff, 0 0 40px #fff;
+}
+
+button{
+        border-radius: 25px;
+        padding: 5px;
+        size: 15px;
+        width: 200px;
+}
+
+button:hover{
+    background-color: aqua;
+}

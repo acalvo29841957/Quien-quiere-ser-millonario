@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMODINES</title>
+  <link rel="stylesheet" href="comodines.css">
+</head>
+<body>
+  <header>
+    <div class="content" id="header">
+      <center><h1>¿QUIÉN QUIERE SER MILLONARIO?</h1></center>
+    </div>
+  </header>
+
+  <div class="container">
+    <center>
+      <ul>
+        <li><button id="btn5050">50/50</button></li>
+        <li><button id="btnAudiencia">AUDIENCIA</button></li>
+        <li><button id="btnChat">CHATEAR CON LA IA</button></li>
+      </ul>
+    </center>
+  </div>
+ <section>
+            <a href="index.html"><button> REGRESAR </button></a>
+</section>
+  <!-- Contenedor dinámico -->
+  <div id="comodinContent">
+  </div>
+
+  <!-- Botón dentro del chat -->
+
+
+<!-- Modal de clave -->
+<div id="claveModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="cerrarModal('claveModal')">&times;</span>
+    <h3>Ingrese la clave</h3>
+    <input type="password" id="claveInput" placeholder="Clave...">
+    <div style="margin-top:15px; text-align:center;">
+      <button onclick="validarClave()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de edición de respuestas -->
+<div id="configModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="cerrarModal('configModal')">&times;</span>
+    <div id="configInputs"></div>
+    <div style="margin-top:15px; text-align:center;">
+      <button onclick="guardarConfiguracion()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// Referencias a elementos
+const btn5050 = document.getElementById("btn5050");
+const btnAudiencia = document.getElementById("btnAudiencia");
+const btnChat = document.getElementById("btnChat");
+const comodinContent = document.getElementById("comodinContent");
+const configModal = document.getElementById("configModal");
+const claveCorrecta = "Anyel1234*."; // Clave para configurar respuestas
+
+// Respuestas configurables
+let respuestasChat = Array(15).fill("Respuesta configurada para esta pregunta");
+
+// -----------------------------
+// FUNCIÓN YA DEFINIDA POR TI
+// -----------------------------
+function generarLista(tipo) {
+  let html = "<ul class='lista-preguntas'>";
+
+  if (tipo === "5050") {
+    html += `<li onclick="alert('Pista: Entre opción A y opción B')">Pregunta 1</li>`;
+    html += `<li onclick="alert('Pista: Entre opción B y opción C')">Pregunta 2</li>`;
+    html += `<li onclick="alert('Pista: Entre opción A y opción D')">Pregunta 3</li>`;
+    html += `<li onclick="alert('Pista: Entre opción C y opción A')">Pregunta 4</li>`;
+    html += `<li onclick="alert('Pista: Entre opción A y opción B')">Pregunta 5</li>`;
+    html += `<li onclick="alert('Pista: Entre opción D y opción B')">Pregunta 6</li>`;
+    html += `<li onclick="alert('Pista: Entre opción B y opción C')">Pregunta 7</li>`;
+    html += `<li onclick="alert('Pista: Entre opción A y opción C')">Pregunta 8</li>`;
+    html += `<li onclick="alert('Pista: Entre opción B y opción A')">Pregunta 9</li>`;
+    html += `<li onclick="alert('Pista: Entre opción C y opción B')">Pregunta 10</li>`;
+    html += `<li onclick="alert('Pista: Entre opción D y opción C')">Pregunta 11</li>`;
+    html += `<li onclick="alert('Pista: Entre opción B y opción D')">Pregunta 12</li>`;
+    html += `<li onclick="alert('Pista: Entre opción A y opción D')">Pregunta 13</li>`;
+    html += `<li onclick="alert('Pista: Entre opción C y opción A')">Pregunta 14</li>`;
+    html += `<li onclick="alert('Pista: Entre opción A y opción B')">Pregunta 15</li>`;
+  } else if (tipo === "audiencia") {
+    html += `<li onclick="alert('La audiencia votó mayormente por opción A')">Pregunta 1</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción C')">Pregunta 2</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción A')">Pregunta 3</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción A')">Pregunta 4</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción B')">Pregunta 5</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción B')">Pregunta 6</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción B')">Pregunta 7</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción C')">Pregunta 8</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción B')">Pregunta 9</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción B')">Pregunta 10</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción C')">Pregunta 11</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción B')">Pregunta 12</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción D')">Pregunta 13</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción C')">Pregunta 14</li>`;
+    html += `<li onclick="alert('La audiencia votó mayormente por opción B')">Pregunta 15</li>`;
+  }
+
+  html += "</ul>";
+  return html;
+}
+
+// -----------------------------
+// CHAT Y CONFIGURACIÓN
+// -----------------------------
+
+// Solicitar clave antes de abrir modal
+function solicitarClave() {
+  const clave = prompt("Ingrese la clave para configurar respuestas:");
+  if (clave === claveCorrecta) {
+    abrirModalConfig();
+  } else {
+    alert("Clave incorrecta ❌");
+  }
+}
+
+// Generar chat
+function generarChat() {
+  return `
+    <div class="chat">
+      <h3>Chat con la IA</h3>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Escribe aquí el numero de la pregunta para saber la respuesta...">
+        <button onclick="enviarMensaje()">Enviar</button>
+      </div>
+      <button onclick="solicitarClave()">⚙️ Configurar respuestas</button>
+    </div>
+  `;
+}
+
+// Abrir modal de configuración
+function abrirModalConfig() {
+  let html = "";
+  for (let i = 1; i <= 15; i++) {
+    html += `
+      <div>
+        Pregunta ${i}: 
+        <input type="text" id="respChat_${i}" value="${respuestasChat[i-1]}">
+      </div>
+    `;
+  }
+  document.getElementById("configInputs").innerHTML = html;
+  configModal.style.display = "block";
+}
+
+// Cerrar modal
+function cerrarModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+// Guardar configuración
+function guardarConfiguracion() {
+  for (let i = 1; i <= 15; i++) {
+    respuestasChat[i-1] = document.getElementById("respChat_" + i).value;
+  }
+  alert("Respuestas guardadas ✅");
+  cerrarModal("configModal");
+}
+
+// Enviar mensaje en el chat
+function enviarMensaje() {
+  const input = document.getElementById("chatInput");
+  const messages = document.getElementById("chatMessages");
+  const texto = input.value.trim();
+
+  if (texto !== "") {
+    const userMsg = document.createElement("p");
+    userMsg.classList.add("user");
+    userMsg.innerHTML = `<strong>Tú:</strong> ${texto}`;
+    messages.appendChild(userMsg);
+
+    const match = texto.match(/pregunta\s*(\d+)/i) || texto.match(/^(\d+)$/);
+    let respuesta = "Configura tus respuestas para que pueda contestar.";
+
+    if (match) {
+      const num = parseInt(match[1]);
+      if (num >= 1 && num <= 15) {
+        respuesta = respuestasChat[num-1];
+      } else {
+        respuesta = "No tengo esa pregunta configurada.";
+      }
+    }
+
+    const iaMsg = document.createElement("p");
+    iaMsg.classList.add("ia");
+    iaMsg.innerHTML = `<strong>IA:</strong> ${respuesta}`;
+    messages.appendChild(iaMsg);
+
+    input.value = "";
+    messages.scrollTop = messages.scrollHeight;
+  }
+}
+
+// -----------------------------
+// EVENTOS DE LOS BOTONES
+// -----------------------------
+btn5050.addEventListener("click", () => {
+  if (!btn5050.classList.contains("usado")) {
+    comodinContent.innerHTML = generarLista("5050");
+    btn5050.classList.add("usado");
+  }
+});
+
+btnAudiencia.addEventListener("click", () => {
+  if (!btnAudiencia.classList.contains("usado")) {
+    comodinContent.innerHTML = generarLista("audiencia");
+    btnAudiencia.classList.add("usado");
+  }
+});
+
+btnChat.addEventListener("click", () => {
+  if (!btnChat.classList.contains("usado")) {
+    comodinContent.innerHTML = generarChat();
+    btnChat.classList.add("usado");
+  }
+});
+
+</script>
+</body>
+</html>
